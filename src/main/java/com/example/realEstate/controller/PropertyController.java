@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PropertyController {
 
-    private final PropertyService propertyService;
+    private final PropertyService propertyService ;
 
     public PropertyController(PropertyService propertyService) {
         this.propertyService = propertyService;
