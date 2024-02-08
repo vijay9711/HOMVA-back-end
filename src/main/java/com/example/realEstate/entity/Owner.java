@@ -20,6 +20,10 @@ public class Owner extends User {
     @JoinTable(name = "owner_properties")
     private List<Property> properties;
 
+
+    @OneToMany(mappedBy = "owner")
+    private List<Message> sentMessages;
+
     public Owner(String firstName, String lastName, String email, String password, UserStatus status) {
         super(firstName, lastName, email, password, status);
     }

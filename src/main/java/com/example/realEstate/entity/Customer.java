@@ -20,7 +20,8 @@ public class Customer extends User {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Offer> offers;
-
+    @OneToMany(mappedBy = "customer")
+    private List<Message> receivedMessages;
     public Customer(String firstName, String lastName, String email, String password,  UserStatus status) {
         super(firstName, lastName, email, password, status);
     }
