@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-  //  private final EmailService emailService;
+   private final EmailService emailService;
 
    // private final SendSmsExample sendSMS;
 
@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
             user = new Customer(firstName, lastName, email, password, UserStatus.ACTIVE);
        }
         user.setRole(role);
-     //  emailService.sendSignupEmail(email);
+      emailService.sendSignupEmail(email);
        // sendSMS.sendSMS();
         return userRepository.save(user);
     }
