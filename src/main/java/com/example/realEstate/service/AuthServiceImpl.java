@@ -8,11 +8,13 @@ import com.example.realEstate.entity.dto.response.LoginResponse;
 import com.example.realEstate.entity.enums.RoleType;
 import com.example.realEstate.entity.enums.UserStatus;
 import com.example.realEstate.integration.EmailService;
+import com.example.realEstate.integration.SendSmsExample;
 import com.example.realEstate.repository.RoleRepository;
 import com.example.realEstate.repository.UserRepository;
 import com.example.realEstate.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +36,9 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final EmailService emailService;
+  //  private final EmailService emailService;
+
+   // private final SendSmsExample sendSMS;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -92,7 +96,8 @@ public class AuthServiceImpl implements AuthService {
             user = new Customer(firstName, lastName, email, password, UserStatus.ACTIVE);
        }
         user.setRole(role);
-       emailService.sendWelcomeEmail(email);
+     //  emailService.sendSignupEmail(email);
+       // sendSMS.sendSMS();
         return userRepository.save(user);
     }
 }

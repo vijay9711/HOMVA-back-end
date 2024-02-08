@@ -1,56 +1,65 @@
 package com.example.realEstate.integration;
 
-import com.sendgrid.Method;
-import com.sendgrid.Request;
-import com.sendgrid.Response;
-import com.sendgrid.SendGrid;
-import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Value("${sendgrid.api-key}")
-    String api_key;
     @Override
-    public void sendEmail(String to_address, String subject, String body) throws IOException {
-        System.out.println(api_key);
-        Email from = new Email("kidiste.gizachew@gmail.com");
-        Email to = new Email(to_address);
-        Content content = new Content("text/plain", body);
-        Mail mail = new Mail(from, subject, to, content);
+    public void sendSignupEmail(String recipientEmail) {
+        // Setup mail server properties for Gmail SMTP
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
 
-        sendGrid(mail);
-    }
+        // Replace with your Gmail credentials
+        final String username = "hmhalyousef@gmail.com";
+        final String password = "gats nlad jdcr pwms";
 
-    @Override
-    public void sendWelcomeEmail(String to_address) throws IOException {
-        Email from = new Email("kidiste.gizachew@gmail.com");
-        Email to = new Email(to_address);
-        Content content = new Content("text/plain", "Welcome to housing");
-        Mail mail = new Mail(from, "Welcome", to, content);
-        mail.setTemplateId("d-cc72cd86d1764262a79adc29adf7dd78");
-        sendGrid(mail);
-    }
+        // Create a Session object
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            @Override
+            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                return new javax.mail.PasswordAuthentication(username, password);
+            }
+        });
 
-    private void sendGrid(Mail mail) throws IOException {
-        SendGrid sg = new SendGrid(api_key);
-        Request request = new Request();
         try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
-        } catch (IOException ex) {
-            throw ex;
+            // Create a MimeMessage object
+            Message message = new MimeMessage(session);
+
+            // Set the sender's email address
+            message.setFrom(new InternetAddress(username));
+
+            // Set recipient's email address
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+
+            // Set email subject
+            message.setSubject("Welcome to HOMVA");
+
+            // Set email content
+            message.setText("Dear User,\n\nThank you for signing up with our HOMVA App");
+
+            // Send the email
+            Transport.send(message);
+
+            System.out.println("Email sent successfully.");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void sendOfferSubmissionEmail(String email) {
+
     }
 }
