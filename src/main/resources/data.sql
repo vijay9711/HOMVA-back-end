@@ -63,8 +63,8 @@ INSERT INTO owner (id, first_name, last_name, email, password, role_id, status, 
 
 --Insert dummy data for Admin
 INSERT INTO admin (id, first_name, last_name, email, password, role_id, status, date_of_registration) VALUES
-                                                                                       (105, 'Jack', 'Blue', 'admin@gmail.com', '$2a$04$x56W5.0jQSi0DPTQ3uoZIudRz2tjwa0rfCUXrC4VNzSLojAm5eLrG', 3, 'ACTIVE', '2022-03-08 09:15:00'),
-                                                                                       (110, 'Kate', 'Brown', 'katebrown@gmail.com', '$2a$04$x56W5.0jQSi0DPTQ3uoZIudRz2tjwa0rfCUXrC4VNzSLojAm5eLrG', 3, 'ACTIVE', '2022-03-09 13:30:00');
+                                                                                                          (105, 'Jack', 'Blue', 'admin@gmail.com', '$2a$04$x56W5.0jQSi0DPTQ3uoZIudRz2tjwa0rfCUXrC4VNzSLojAm5eLrG', 3, 'ACTIVE', '2022-03-08 09:15:00'),
+                                                                                                          (110, 'Kate', 'Brown', 'katebrown@gmail.com', '$2a$04$x56W5.0jQSi0DPTQ3uoZIudRz2tjwa0rfCUXrC4VNzSLojAm5eLrG', 3, 'ACTIVE', '2022-03-09 13:30:00');
 -- Insert dummy data for Address
 INSERT INTO Address (id, street, city, state, zipcode)
 VALUES (1000, '1234 Elm St', 'San Francisco', 'CA', '94107'),
@@ -150,19 +150,18 @@ VALUES (100, 300000, 'WAITING', '2023-04-27T10:09:30', 100, 2600, 2600),
        (700, 350000, 'WAITING', '2023-04-27T10:09:30', 200, 2800, 2800);
 
 INSERT INTO photos (id, link, property_id)
-VALUES (1000, 'http://localhost:8080/api/images/1.webp', 2600),
-       (2000, 'http://localhost:8080/api/images/2.webp', 2700),
-       (3000, 'http://localhost:8080/api/images/3.webp', 2800),
-       (4000, 'http://localhost:8080/api/images/4.webp', 2900),
-       (5000, 'http://localhost:8080/api/images/2.webp', 3000),
-       (6000, 'http://localhost:8080/api/images/5.webp', 3100),
-       (7000, 'http://localhost:8080/api/images/6.webp', 3200),
-       (8000, 'http://localhost:8080/api/images/3.webp', 3300),
-       (9000, 'http://localhost:8080/api/images/1.webp', 3400),
-       (10000, 'http://localhost:8080/api/images/6.webp', 3500),
-       (11000, 'http://localhost:8080/api/images/2.webp', 3600),
-       (12000, 'http://localhost:8080/api/images/5-2.webp', 3700),
-       (13000, 'http://localhost:8080/api/images/4.webp', 3800),
-       (14000, 'http://localhost:8080/api/images/3.webp', 3900),
-       (15000, 'http://localhost:8080/api/images/2.webp', 4000);
-
+VALUES (1000, 'http://localhost:8080/api/images/img1.webp', 2600),
+       (2000, 'http://localhost:8080/api/images/img2.webp', 2700),
+       (3000, 'http://localhost:8080/api/images/img3.webp', 2800),
+       (4000, 'http://localhost:8080/api/images/img4.webp', 2900),
+       (5000, 'http://localhost:8080/api/images/img5.webp', 3000),
+       (6000, 'http://localhost:8080/api/images/img6.webp', 3100),
+       (7000, 'http://localhost:8080/api/images/img7.webp', 3200),
+       (8000, 'http://localhost:8080/api/images/img8.webp', 3300),
+       (9000, 'http://localhost:8080/api/images/img9.webp', 3400),
+       (10000, 'http://localhost:8080/api/images/img10.webp', 3500),
+       (11000, 'http://localhost:8080/api/images/img11.webp', 3600),
+       (12000, 'http://localhost:8080/api/images/img12.webp', 3700),
+       (13000, 'http://localhost:8080/api/images/img13.webp', 3800),
+       (14000, 'http://localhost:8080/api/images/img14.webp', 3900),
+       (15000, 'http://localhost:8080/api/images/img15.webp', 4000);

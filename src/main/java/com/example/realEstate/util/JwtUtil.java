@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +19,20 @@ import java.util.function.Function;
 public class JwtUtil {
     @Autowired
     UserDetailsService userDetailsService;
-    private final String secret = "top-secret";
+    byte[] secretBytes = generateRandomBytes(90); // 32 bytes = 256 bits
+
+    // Encode the byte array to a base64 string
+    String secret = Base64.getEncoder().encodeToString(secretBytes);
+
+
     private final long expiration = 20 * 60 * 60 * 60 * 60;
     private final long refreshExpiration = 50 * 60 * 60 * 60 * 60;
-
+    private static byte[] generateRandomBytes(int length) {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] bytes = new byte[length];
+        secureRandom.nextBytes(bytes);
+        return bytes;
+    }
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);

@@ -29,15 +29,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest){
-        User user = null;
+    public ResponseEntity<?> signUp(@RequestBody SignupRequest signupRequest) {
         try {
-            user = authService.signup(signupRequest);
+            User user = authService.signup(signupRequest);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return new ResponseEntity<User>(user, HttpStatus.OK);
 
+            return new ResponseEntity<>("duplicateID", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/refresh-token")

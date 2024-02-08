@@ -62,11 +62,11 @@ public class AuthServiceImpl implements AuthService {
             // (check the expiration of the accessToken when request sent, if the is recent according to
             //  issue Date, then accept the renewal)
             var isAccessTokenExpired = jwtUtil.isTokenExpired(refreshTokenRequest.getAccessToken());
-            if(isAccessTokenExpired)
+            if (isAccessTokenExpired)
                 System.out.println("ACCESS TOKEN IS EXPIRED"); //  Renew is this case
             else
                 System.out.println("ACCESS TOKEN IS NOT EXPIRED");
-            final String accessToken = jwtUtil.doGenerateToken(  jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));
+            final String accessToken = jwtUtil.doGenerateToken(jwtUtil.getSubject(refreshTokenRequest.getRefreshToken()));
             var loginResponse = new LoginResponse(accessToken, refreshTokenRequest.getRefreshToken());
             // (OPTIONAL) When to renew the refresh token?
             return loginResponse;
@@ -74,25 +74,37 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponse();
     }
 
+
     @Override
     public User signup(SignupRequest signupRequest) throws IOException {
-        String firstName=  signupRequest.getFirstName();
+        String firstName = signupRequest.getFirstName();
         String lastName = signupRequest.getLastName();
         String email = signupRequest.getEmail();
         String password = passwordEncoder.encode(signupRequest.getPassword());
         String roleTypeString = signupRequest.getRole();
-        RoleType roleTypeEnum= RoleType.valueOf(roleTypeString);
+        RoleType roleTypeEnum = RoleType.valueOf(roleTypeString);
         User user;
 
-        Role role = roleRepository.findByRole(roleTypeEnum);
+        try {
+            // Check if the email already exists in the database
+            if (userRepository.existsByEmail(email)) {
+                throw new IllegalArgumentException("Email already exists");
+            }
 
-       if(roleTypeString.equals("OWNER")) {
-            user = new Owner(firstName, lastName, email, password, UserStatus.PENDING);
-       }else {
-            user = new Customer(firstName, lastName, email, password, UserStatus.ACTIVE);
-       }
-        user.setRole(role);
-       emailService.sendWelcomeEmail(email);
-        return userRepository.save(user);
+            Role role = roleRepository.findByRole(roleTypeEnum);
+
+            if (roleTypeString.equals("OWNER")) {
+                user = new Owner(firstName, lastName, email, password, UserStatus.PENDING);
+            } else {
+                user = new Customer(firstName, lastName, email, password, UserStatus.ACTIVE);
+            }
+            user.setRole(role);
+            emailService.sendSignupEmail(email);
+            return userRepository.save(user);
+        } catch (Exception e) {
+            log.error("Error occurred during user signup: {}", e.getMessage());
+            throw new IOException("Error occurred during user signup", e);
+        }
     }
+
 }
