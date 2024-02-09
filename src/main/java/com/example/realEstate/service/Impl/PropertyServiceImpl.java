@@ -46,7 +46,7 @@ class PropertyServiceImpl implements PropertyService {
         Address address = new Address(propertyRequest.getStreet(), propertyRequest.getCity(), propertyRequest.getState(), propertyRequest.getZipcode());
         PropertyDetails propertyDetails = new PropertyDetails(propertyRequest.isPet(), propertyRequest.getCooling(), propertyRequest.getHeater(), propertyRequest.getDeposit());
         Photos photos = new Photos();
-        photos.setLink("http://localhost:8080/api/images/"+propertyRequest.getFile().getOriginalFilename());
+        photos.setLink("http://localhost:8080/api/uploads/"+propertyRequest.getFile().getOriginalFilename());
         property.setPropertyType(propertyRequest.getPropertyType());
         List<Photos> photosList = new ArrayList<>();
         photosList.add(photos);

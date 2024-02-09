@@ -16,11 +16,11 @@ import java.nio.file.Paths;
 @CrossOrigin(origins = {"*"})
 public class ImageController {
 
-    private static final String UPLOAD_DIR = "uploads/";
 
-    @GetMapping(value = "/api/images/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+
+    @GetMapping(value = "/api/uploads/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) throws IOException {
-        Path imagePath = Paths.get(UPLOAD_DIR + filename);
+        Path imagePath = Paths.get("uploads/" + filename);
         Resource imageResource = new UrlResource(imagePath.toUri());
 
         if (imageResource.exists()) {
