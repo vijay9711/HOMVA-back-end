@@ -1,8 +1,6 @@
 package com.example.realEstate.service;
 import com.example.realEstate.entity.Offer;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import com.example.realEstate.entity.Property;
 import com.example.realEstate.entity.enums.ListingType;
 import com.example.realEstate.entity.enums.PropertyType;
@@ -22,5 +20,5 @@ public interface PropertyService {
     public List<Property> findPropertyStatus();
     public List<Offer> searchPropertyCriteria(Long id, Long pptId, String city, String state,
                                               Double price, LocalDateTime submittedAt) ;
-
+    public Property deletePropertyById(long id);
 }

@@ -1,4 +1,4 @@
-package com.example.realEstate.service;
+package com.example.realEstate.service.Impl;
 
 import com.example.realEstate.entity.*;
 import com.example.realEstate.entity.enums.ListingType;
@@ -9,7 +9,9 @@ import com.example.realEstate.integration.StorageService;
 import com.example.realEstate.repository.OwnerRepository;
 import com.example.realEstate.repository.PropertyRepository;
 import com.example.realEstate.repository.SearchOffersDao;
+import com.example.realEstate.service.PropertyService;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -17,10 +19,8 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +76,17 @@ class PropertyServiceImpl implements PropertyService {
     public Property getPropertyById(long id) {
         return propertyRepository.findById(id).get();
     }
+
+
+    @Override
+    public Property deletePropertyById(long id) {
+        Property property = propertyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Property not found with id: " + id));
+
+        propertyRepository.delete(property);
+        return property;
+    }
+
+
 
     @Override
     public Property updatePropertyById(long ownerId, long id, PropertyRequest propertyRequest) {

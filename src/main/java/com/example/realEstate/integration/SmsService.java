@@ -6,7 +6,7 @@ import com.twilio.type.PhoneNumber;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SendSmsExample {
+public class SmsService {
     // Your Twilio Account SID and Auth Token from the Twilio Console
     public static final String ACCOUNT_SID = "AC7ff8e62214f7f9e664e219ca47b1eefc";
     public static final String AUTH_TOKEN = "7f57045b4c54b2ed3f78ae7a8f348f10";

@@ -24,6 +24,12 @@ public class PropertyController {
         return propertyService.getPropertyById(id);
     }
 
+    @DeleteMapping("/{id}")
+    public Property deletePropertyById(@PathVariable("id") long id) {
+        return propertyService.deletePropertyById(id);
+    }
+
+
     @GetMapping
     public Page<Property> getProperties(
             @RequestParam(required = false) ListingType listingType,

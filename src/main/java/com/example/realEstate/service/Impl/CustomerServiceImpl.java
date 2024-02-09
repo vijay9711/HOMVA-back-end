@@ -1,4 +1,4 @@
-package com.example.realEstate.service;
+package com.example.realEstate.service.Impl;
 
 import com.example.realEstate.entity.Customer;
 import com.example.realEstate.entity.Offer;
@@ -12,6 +12,7 @@ import com.example.realEstate.repository.CustomerRepository;
 import com.example.realEstate.repository.OfferRepository;
 import com.example.realEstate.repository.OwnerRepository;
 import com.example.realEstate.repository.PropertyRepository;
+import com.example.realEstate.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

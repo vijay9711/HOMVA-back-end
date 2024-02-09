@@ -1,4 +1,4 @@
-package com.example.realEstate.service;
+package com.example.realEstate.service.Impl;
 
 import com.example.realEstate.entity.*;
 import com.example.realEstate.entity.dto.request.LoginRequest;
@@ -8,11 +8,14 @@ import com.example.realEstate.entity.dto.response.LoginResponse;
 import com.example.realEstate.entity.enums.RoleType;
 import com.example.realEstate.entity.enums.UserStatus;
 import com.example.realEstate.integration.EmailService;
+import com.example.realEstate.integration.SmsService;
 import com.example.realEstate.repository.RoleRepository;
 import com.example.realEstate.repository.UserRepository;
+import com.example.realEstate.service.AuthService;
 import com.example.realEstate.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,9 +38,8 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final EmailService emailService;
-
-    @Override
-    public LoginResponse login(LoginRequest loginRequest) {
+private final SmsService SmsService;
+    public LoginResponse login(LoginRequest loginRequest) throws ChangeSetPersister.NotFoundException {
         Authentication result = null;
         try {
             result = authenticationManager.authenticate(
@@ -50,10 +52,21 @@ public class AuthServiceImpl implements AuthService {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(result.getName());
         final String accessToken = jwtUtil.generateToken(userDetails);
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequest.getEmail());
+
+        // Retrieve user information from the database
         User user = userRepository.findByEmail(loginRequest.getEmail());
+
+        // Check if the user exists in the database
+        if (user == null) {
+            // Handle the scenario where the email is not found in the database
+            throw new ChangeSetPersister.NotFoundException();
+        }
+
+        // User exists, create the login response
         var loginResponse = new LoginResponse(accessToken, refreshToken, user.getFirstName(), user.getId(), user.getRole().getRole(), user.getStatus());
         return loginResponse;
     }
+
 
     @Override
     public LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
@@ -99,7 +112,10 @@ public class AuthServiceImpl implements AuthService {
                 user = new Customer(firstName, lastName, email, password, UserStatus.ACTIVE);
             }
             user.setRole(role);
+           // SmsService.sendSMS();
             emailService.sendSignupEmail(email);
+
+
             return userRepository.save(user);
         } catch (Exception e) {
             log.error("Error occurred during user signup: {}", e.getMessage());

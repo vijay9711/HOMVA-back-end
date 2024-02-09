@@ -6,6 +6,7 @@ import com.example.realEstate.entity.dto.request.RefreshTokenRequest;
 import com.example.realEstate.entity.dto.request.SignupRequest;
 import com.example.realEstate.entity.dto.response.LoginResponse;
 import com.example.realEstate.service.AuthService;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws ChangeSetPersister.NotFoundException {
         var loginResponse = authService.login(loginRequest);
         return new ResponseEntity<LoginResponse>(loginResponse, HttpStatus.OK);
     }
@@ -38,7 +39,6 @@ public class AuthController {
             return new ResponseEntity<>("duplicateID", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PostMapping("/refresh-token")
     public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return authService.refreshToken(refreshTokenRequest);
